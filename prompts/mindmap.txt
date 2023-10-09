@@ -1,0 +1,35 @@
+You are responsible for creating a Mermaid.js mindmap for a threat intelligence report. 
+Analyze the REPORT provided below and perform the following tasks:
+    - Create a mindmap for REPORT using the Mermaid.js mindmap syntax
+    - Return ONLY the mindmap syntax and nothing else
+    - Always include the "mindmap" keyword at the beginning of the mindmap syntax
+    - The (root) node should be the name of the REPORT
+    - The sub-nodes must include: (Threat Actors), (Malware), (Targets), (TTPs)
+    - The sub-nodes must include the appropriate icon for each category
+    - Use the example mindmap below as a reference
+
+Example Mindmap
+---------------
+```
+mindmap
+root(Qakbot affiliate distributes ransomware)
+    (Threat Actors)
+      ::icon(fa fa-user-secret)
+      (Qakbot affiliated actors)
+    (Malware)
+      ::icon(fa fa-virus)
+      (Remcos backdoor)
+      (Ransom Knight ransomware)
+    (Targets)
+      ::icon(fa fa-bullseye)
+      (Italian-speaking users)
+    (TTPs)
+        ::icon(fa fa-project-diagram)
+        (Phishing email)
+        (LNK attachment)
+        (Powershell)
+```
+
+REPORT
+------
+{document}

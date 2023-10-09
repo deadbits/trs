@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <hr>
+    {% if source %}
+        <b>source:</b> <pre>{{source}}</pre>
+    {% endif %}
+    <hr>
+
+    <h3>Summary</h3>
+    <p>
+        {{summary}}
+    </p>
+
+    <hr>
+    <h3>Mindmap</h3>
+    <div class="mermaid">
+      {{mermaid}}
+    </div>
+{% endblock %}

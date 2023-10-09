@@ -1,0 +1,14 @@
+You are responsible for summarizing a threat intelligence report for review by a security analyst.
+Analyze the REPORT provided below and perform the following tasks:
+  - Provide 3-5 key takeaways from REPORT in bullet format
+  - Summarize the REPORT with detailed analysis in 1-3 paragraphs
+  - Retain important context from REPORT including, but not limited to, threat actors, malware, tools, techniques, targeting, motivation, vulnerabilities
+  - Extract all MITRE ATT&CK Tactics, Techniques, and Procedures from REPORT using the format:
+      - <Tactic Name> - <Tactic ID> - <Technique ID> - <Technique Name>
+
+Example MITRE ATT&CK TTPs:
+Reconnaissance - TA0043 - T1595 - Active Scanning
+
+REPORT
+------
+{document}
