@@ -1,3 +1,4 @@
+import os
 import openai
 import tiktoken
 
@@ -10,10 +11,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, Dict, List
 
 
-intel_summary_prompt = open('prompts/summary.txt', 'r').read()
-mindmap_prompt_template = open('prompts/mindmap.txt', 'r').read()
-qna_prompt_template = open('prompts/qna.txt', 'r').read()
-detection_prompt = open('prompts/detect.txt', 'r').read()
+PROMPT_DIR = os.path.abspath(os.path.join(os.path.abspath('.'), 'prompts'))
 
 
 class LLM:
@@ -80,17 +78,20 @@ class LLM:
 
     def mindmap(self, doc: Document) -> str:
         logger.info('creating mindmap')
+        mindmap_prompt_template = open(PROMPT_DIR + '/mindmap.txt', 'r').read()
         prompt = mindmap_prompt_template.format(document=doc.text)
         return self._call_openai(user_prompt=prompt)
 
     def summarize(self, doc: Document) -> str:
         logger.info('summarizing text')
+        intel_summary_prompt = open(PROMPT_DIR + '/summary.txt', 'r').read()
         prompt = intel_summary_prompt.format(document=doc.text)
         summary = self._call_openai(user_prompt=prompt)
         return Summary(source=doc.source, summary=summary)
     
     def detect(self, doc: Document) -> str:
         logger.info('identifying detections')
+        detection_prompt = open(PROMPT_DIR + '/detect.txt', 'r').read()
         prompt = detection_prompt.format(document=doc.text)
         return self._call_openai(user_prompt=prompt)
     
@@ -98,3 +99,17 @@ class LLM:
         logger.info('sending qna prompt')
         prompt = qna_prompt_template.format(question=question, documents=docs)
         return self._call_openai(user_prompt=prompt)
+    
+    def custom(self, prompt_name: str, doc: Document) -> str:
+        logger.info('building custom prompt template')
+        prompt_path = os.path.join(PROMPT_DIR, prompt_name + '.txt')
+
+        if not os.path.exists(prompt_path):
+            logger.error(f'custom prompt template not found: {prompt_path}')
+            return None
+
+        custom_template = open(prompt_path).read()
+        prompt = custom_template.format(document=doc.text)
+        return self._call_openai(user_prompt=prompt)
+
+

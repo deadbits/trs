@@ -1,3 +1,4 @@
+import os
 import sys
 import openai
 import argparse
@@ -20,8 +21,7 @@ from trs.chunker import TextSplitter
 from trs.vectordb import VectorDB
 
 
-OPENAI_KEY = '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'
-
+vdb_dir = os.path.abspath(os.path.join(os.path.abspath('.'), 'data'))
 splitter = TextSplitter(chunk_size=1024, overlap=200)
 loader = Loader()
 console = Console()
@@ -48,6 +48,12 @@ def process_detection(url: str) -> str:
     doc = url_to_doc(url=url)
     detections = llm.detect(doc=doc)
     return detections
+
+def process_custom(url: str, prompt_name: str) -> str:
+    logger.info(f'processing url with custom prompt: {url}')
+    doc = url_to_doc(url=url)
+    custom = llm.custom(prompt_name=prompt_name, doc=doc)
+    return custom
 
 def process_summary(url: str) -> Tuple[str, str, Indicators]:
     logger.info(f'processing url for summarization: {url}')
@@ -80,25 +86,23 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '-c', '--chat',
-        required=False,
+        required=True,
         action='store_true',
         help='Enter chat mode'
     )
 
-    # parser.add_argument(
-    #    '-k', '--key',
-    #    type=str,
-    #    required=True,
-    #    help='OpenAI API key'
-    #)
-
     args = parser.parse_args()
+
+    OPENAI_KEY = os.environ.get('OPENAI_API_KEY')
+    if OPENAI_KEY is None:
+        logger.error('OPENAI_API_KEY environment variable not set')
+        sys.exit(1)
 
     llm = LLM(openai_api_key=OPENAI_KEY)
 
     vdb = VectorDB(
         collection_name='trs',
-        db_dir='/home/adam/Research/machine-learning/trs/data',
+        db_dir=vdb_dir,
         n_results=3,
         openai_key=OPENAI_KEY
     )
@@ -107,6 +111,7 @@ if __name__ == '__main__':
         print(f'{Style.BOLD}{Fore.cyan_3}commands:{Style.reset}')
         print(f'* {Fore.cyan_3}!summ <url>{Style.reset} - summarize a threat report')
         print(f'* {Fore.cyan_3}!detect <url>{Style.reset} - identify detections in report')
+        print(f'* {Fore.cyan_3}!custom <prompt_name> <url>{Style.reset} - process URL with a custom prompt')
         print(f'* {Fore.cyan_3}!exit|!quit{Style.reset} - exit application')
 
         print(f'{Style.BOLD}{Fore.dark_orange_3b}ready to chat!{Style.reset}\n')
@@ -119,12 +124,28 @@ if __name__ == '__main__':
                     logger.info('exiting')
                     break
 
+                elif prompt.lower().startswith('!custom'):
+                    print('processing custom prompt ...')
+
+                    try:
+                        prompt_name = prompt.split(' ')[1].strip()
+                        url = prompt.split(' ')[2].strip()
+                        response = process_custom(url=url, prompt_name=prompt_name)
+                        print('🤖 >>')
+                        console.print(Markdown(response))
+                    except Exception as err:
+                        logger.error(f'error processing custom prompt: {err}')
+                        pass
+
+                    continue
+
                 elif prompt.lower().startswith('!summ'):
                     print('processing url ...')
 
                     try:
                         url = prompt.split('!summ ')[1].strip()
                         summ, mindmap, iocs = process_summary(url=url)
+                        print('🤖 >>')
                         console.print(Markdown(summ))
                         print(mindmap)
                         print(iocs)
@@ -136,11 +157,11 @@ if __name__ == '__main__':
             
                 elif prompt.lower().startswith('!detect'):
                     print('identifying detection use cases ...')
-
                     
                     try:
                         url = prompt.split('!detect ')[1].strip()
                         detections = process_detection(url=url)
+                        print('🤖 >>')
                         console.print(Markdown(detections))
                     except Exception as err:
                         logger.error(f'error processing url: {err}')
@@ -149,16 +170,12 @@ if __name__ == '__main__':
                     continue
 
                 else:
-                    # fetch context from vector db
                     response = vdb.query(prompt)
-
-                    # quick format of context docs for LLM prompt
                     texts = '\n'.join([item['text'] for item in response])
 
                     # uncomment at your own log-based peril. this can be a lot of messy text.
                     # logger.debug(f'texts: {texts}')
                     
-                    # send original prompt + context to LLM for response
                     qna_answer = llm.qna(question=prompt, docs=texts)
                     print('🤖 >>')
                     console.print(Markdown(qna_answer))
