@@ -1,7 +1,11 @@
 # trs - threat report summarizer
 
 ## Overview
-`trs` is a command line tool that leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. The tool is built around an interactive session where you first supply a report URL and a command to run for summarization, MITRE TTP extraction, identification of detection opportunities, or custom prompts. The text from each URL is stored in a Chroma vector database so you can then have QnA / Retrieval-Augmented-Generation (RAG) chat sessions with the processed reports.
+`trs` is a command line tool that leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. 
+
+Supply a threat report to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the report content.
+
+Each URL's text content is stored in a Chroma vector database so you can have QnA / Retrieval-Augmented-Generation (RAG) chat sessions with the processed reports.
 
 The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts more easily, but feel free to swap this out for the `gpt-4-32k` model in the config if you have access.
 
@@ -47,7 +51,7 @@ URLs provided to the `!summ`, `!detect`, and `!custom` commands go through the f
 3. Store text and their embeddings in vector database with source URL metadata
 4. Send full text content with specified prompt template (the command) to OpenAI and return response
 
-* **!summ**: generate a summary of the URL's content with a list of key takeaways, summary paragraph, MITRE TTPs, and a Mermaid.js mindmap representing an overview of the report
+* **!summ**: generate a summary of the URL's content with a list of key takeaways, summary paragraph, MITRE TTPs, and a [Mermaid mindmap](https://mermaid.live/) representing an overview of the report
 * **!detect**: identify any threat detection opportunities within the URL's content
 * **!custom**: fetch the URL's content and process it with a custom prompt
 

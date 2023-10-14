@@ -19,7 +19,7 @@ class LLM:
         openai.api_key = openai_api_key
         self.model = 'gpt-3.5-turbo-16k'
         self.encoding_name = 'cl100k_base'
-        self.token_limit = 8192
+        self.token_limit = 16385 
 
         try:
             openai.Model.list()
@@ -97,6 +97,7 @@ class LLM:
     
     def qna(self, question: str, docs: str) -> str:
         logger.info('sending qna prompt')
+        qna_prompt_template = open(PROMPT_DIR + '/qna.txt', 'r').read()
         prompt = qna_prompt_template.format(question=question, documents=docs)
         return self._call_openai(user_prompt=prompt)
     
