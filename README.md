@@ -9,11 +9,13 @@ Each URL's text content is stored in a Chroma vector database so you can have Qn
 
 The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts more easily, but feel free to swap this out for the `gpt-4-32k` model in the config if you have access.
 
+**Full documentation:** [https://trs.deadbits.ai](https://trs.deadbits.ai)
+
 ## Features
 - **Report Summarization**: Concise summary of threat reports
 - **MITRE TTP Extraction**: Extract MITRE ATT&CK tactics, techniques, and procedures.
 - **IOC Extraction**: Extract IOCs via [python-iocextract](https://github.com/InQuest/iocextract)
-- **Mindmap Creation**: Generate Mermaid.js mindmap representing report artifacts
+- **Mindmap Creation**: Generate [Mermaid mindmap](https://mermaid.live/) representing report artifacts
 - **Detection Opportunities**: Identify potential detections 
 - **Custom Prompts**: Add your own prompts to apply to report content
 - **Chat Mode**: Interactive Q&A with data stored in the vector db
