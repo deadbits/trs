@@ -13,6 +13,7 @@ The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts
 - **Report Summarization**: Concise summary of threat reports
 - **MITRE TTP Extraction**: Extract MITRE ATT&CK tactics, techniques, and procedures.
 - **IOC Extraction**: Extract IOCs via [python-iocextract](https://github.com/InQuest/iocextract)
+- **Mindmap Creation**: Generate Mermaid.js mindmap representing report artifacts
 - **Detection Opportunities**: Identify potential detections 
 - **Custom Prompts**: Add your own prompts to apply to report content
 - **Chat Mode**: Interactive Q&A with data stored in the vector db
