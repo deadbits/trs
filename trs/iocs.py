@@ -4,9 +4,14 @@ from .schema import Indicators
 
 
 def update_iocs(iocs, ext_func, content, defang=False):
-    for ioc in ext_func(content, defang=defang):
-        if ioc not in iocs:
-            iocs.append(ioc)
+    if ext_func == iocextract.extract_urls:
+        for ioc in ext_func(content, defang=defang):
+            if ioc not in iocs:
+                iocs.append(ioc)
+    else:
+        for ioc in ext_func(content):
+            if ioc not in iocs:
+                iocs.append(ioc)
 
 
 def extract_iocs(content: str):

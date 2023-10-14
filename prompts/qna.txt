@@ -1,0 +1,11 @@
+Answer the user QUESTION using the CONTEXT documents provided below.
+If the answer is not contained within the CONTEXT, say "I do not have enough information in the provided context to answer."
+Do not try to answer the question using information outside of the CONTEXT.
+
+CONTEXT
+-------
+{documents}
+
+QUESTION
+--------
+{question}
