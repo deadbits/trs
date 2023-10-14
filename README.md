@@ -86,7 +86,7 @@ RealName set to "Health Check Service". If any other values are received, the we
 “Health Check Service” admin user and creates an active session.
 ```
 
-## Technology Stack
+## Stack
 - **Python**
 - **OpenAI API**: LLM
 - **Loguru**: Logging
