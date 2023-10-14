@@ -1,4 +1,4 @@
-# trs - threat report summarizer
+# trs
 
 ## Overview
 `trs` is a command line tool that leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. 
