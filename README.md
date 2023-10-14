@@ -84,12 +84,15 @@ RealName set to "Health Check Service". If any other values are received, the we
 “Health Check Service” admin user and creates an active session.
 ```
 
-
 ## Technology Stack
-- **Python**: The primary language for development.
-- **OpenAI API**: For leveraging a large language model.
-- **Loguru**: Logging functionalities.
-- **Rich**: For better CLI visuals.
+- **Python**
+- **OpenAI API**: LLM
+- **Loguru**: Logging
+- **Rich**: Better visuals
+- **Chroma:** Vector database
+- **Iocextract:** IOC extraction
+- **LlamaIndex:** Text chunking
+- **Unstructured:** URL retrieval and parsing
 
 ## Contributing
 Feel free to open issues or PRs if you want to improve the app or add new functionalities.
