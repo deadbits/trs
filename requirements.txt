@@ -1,3 +1,5 @@
+rich==13.6.0
+colored==2.2.3
 unstructured==0.10.19
 openai==0.28.1
 llama-index==0.8.41
