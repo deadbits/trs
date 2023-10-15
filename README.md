@@ -59,7 +59,7 @@ python main.py --chat
 streamlit run trs-streamlit.py
 ```
 
-![trs-streamlit](screenshots/IMG_3988.png)
+![trs-streamlit](screenshots/streamlit-chat.png)
 
 ### Command List 🛠️ 
 
@@ -68,6 +68,7 @@ streamlit run trs-streamlit.py
 | `!summ`  | Generate a summary of the URL's content including key takeaways, summary paragraph, [MITRE TTPs](https://www.google.com/search?q=MITRE+TTPs), and a [Mermaid mindmap](https://mermaid.live/) for a report overview.|
 | `!detect`| Identify any threat detection opportunities within the URL's content. |
 | `!custom`| Fetch the URL's content and process it with a custom prompt.|
+| all other input | Run RAG pipeline with input as query | 
 
 ### Retrieval-Augmented-Generation 🔍
 * [Indexing and retrieval pipeline diagrams](https://trs.deadbits.ai/overview/diagrams)
