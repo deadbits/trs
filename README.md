@@ -1,6 +1,6 @@
 # trs
 
-## Overview
+## Overview 🏕️
 `trs` leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. 
 
 Supply a threat report URL to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the URL's text.
@@ -11,7 +11,7 @@ The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts
 
 **Full documentation:** [https://trs.deadbits.ai](https://trs.deadbits.ai)
 
-## Features
+## Features ✨
 - **Report Summarization**: Concise summary of threat reports
 - **TTP Extraction**: Extract MITRE ATT&CK tactics, techniques, and procedures
 - **IOC Extraction**: Extract IOCs via [python-iocextract](https://github.com/InQuest/iocextract)
@@ -20,7 +20,7 @@ The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts
 - **Custom Prompts**: Run custom prompts against reports
 - **Chat Mode**: Interactive Q&A with stored data via LLM
 
-## Installation
+## Installation 🧰
 **Clone repository**
 ```bash
 git clone https://github.com/deadbits/trs.git
@@ -38,7 +38,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Usage 💬
 
 **Set your OpenAI API key:**
 ```bash
@@ -52,7 +52,7 @@ python main.py --chat
 
 ![trs-cli](screenshots/cli.png)
 
-### 🛠️ Command List
+### Command List 🛠️ 
 
 | Command  | Description |
 |----------|-------------|
@@ -60,13 +60,7 @@ python main.py --chat
 | `!detect`| Identify any threat detection opportunities within the URL's content. |
 | `!custom`| Fetch the URL's content and process it with a custom prompt.|
 
-
-#### Custom Prompts
-Custom prompt templates can be saved to the `prompts/` directory as text files with the `.txt` extension. The `!custom` command will look for prompts by file basename in that directory, add the URL's text content to the template, and send it to the LLM for processing.
-
-Custom prompts **must** include the format string `{document}` so the URL text content can be added.
-
-### Retrieval-Augmented-Generation
+### Retrieval-Augmented-Generation 🔍
 * [Indexing and retrieval pipeline diagrams](https://trs.deadbits.ai/overview/diagrams)
 
 Before you can use the chat functionality, you must first process a URL with one of the commands above so the vector database has some context to use.
@@ -88,6 +82,11 @@ Command “-1” retrieves Azure system settings from MOVEit Transfer and perfor
 RealName set to "Health Check Service". If any other values are received, the web shell opens a specified file and retrieves it. If no values are specified, it creates the     
 “Health Check Service” admin user and creates an active session.
 ```
+
+#### Custom Prompts 📝
+Custom prompt templates can be saved to the `prompts/` directory as text files with the `.txt` extension. The `!custom` command will look for prompts by file basename in that directory, add the URL's text content to the template, and send it to the LLM for processing.
+
+Custom prompts **must** include the format string `{document}` so the URL text content can be added.
 
 ## Stack
 - **Python**
