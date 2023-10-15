@@ -5,10 +5,6 @@ from typing import Optional, Dict, List
 
 class Document(BaseModel):
     text: str
-    embedding: Optional[List[float]] = Field(
-        None,
-        description="Embedding of the document"
-    )
     source: str
     metadata: Optional[Dict[str, str]] = Field(
         None,
@@ -19,7 +15,6 @@ class Document(BaseModel):
 class Summary(BaseModel):
     summary: str
     source: str
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
     metadata: Optional[Dict[str, str]] = Field(
         None,
         description="Optional metadata dict"
@@ -40,3 +35,11 @@ class Indicators(BaseModel):
         description="Optional list of file hashes"
     )
 
+
+class Message(BaseModel):
+    role: str
+    content: str
+
+
+class Conversation(BaseModel):
+    history: List[Message]
