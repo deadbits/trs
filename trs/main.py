@@ -48,26 +48,31 @@ class TRS:
         except Exception as err:
             logger.error(f'Error saving processed URLs: {err}')
 
-    def url_to_doc(self, url: str) -> Document:
-        logger.info(f'retrieving: {url}')
-        doc = self.loader.url(url=url)
+    def process_document(self, source: str, load_func) -> Document:
+        logger.info(f'processing: {source}')
+        doc = load_func(source=source)
         if doc is None:
-            logger.error(f'Error retrieving HTML: {url}')
+            logger.error(f'Error retrieving Document: {source}')
             return None
 
-        if url not in self.previous_urls:
+        if source not in self.previous_urls:
             doc_chunks = self.splitter.split(doc.text)
             self.vdb.add_texts(
                 texts=doc_chunks,
-                metadatas=[{'source': url} for _ in range(len(doc_chunks))]
+                metadatas=[{'source': source} for _ in range(len(doc_chunks))]
             )
-            self.previous_urls.add(url)
+            self.previous_urls.add(source)
             self.save_processed_urls()
-        
         else:
-            logger.info(f'URL already processed; skipping db insert: {url}')
+            logger.info(f'Source already processed; skipping db insert: {source}')
 
         return doc
+
+    def pdf_to_doc(self, file_path: str) -> Document:
+        return self.process_document(file_path, self.loader.pdf)
+
+    def url_to_doc(self, url: str) -> Document:
+        return self.process_document(url, self.loader.url)
     
     def qna(self, prompt: str) -> str:
         logger.info(f'processing: {prompt}')
@@ -101,7 +106,7 @@ class TRS:
                 texts=[summ.summary],
                 metadatas=[
                     {
-                        'orig-source': url,
+                        'source': url,
                         'type': 'summary'
                     }
                 ]

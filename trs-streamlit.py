@@ -5,6 +5,7 @@ import argparse
 import tiktoken
 import streamlit as st
 import streamlit_mermaid as stmd
+import pandas as pd
 
 from streamlit_extras.badges import badge
 
@@ -49,6 +50,7 @@ def main():
         [
             'Analyze',
             'Chat',
+            'Database',
             'History',
         ]
     )
@@ -147,6 +149,15 @@ def main():
             st.write('Prompt:', item['prompt'])
             st.write('Response:', item['response'])
             st.write('-' * 50)
+    
+    elif page == 'Database':
+        st.title('Database Viewer')
+        st.markdown(f'**Total records:** {trs.vdb.count()}')
+        st.caption('Viewer restricted to 10k records')
+        data = trs.vdb.get()
+        df = pd.DataFrame.from_dict(data)
+        df = df.head(10000)
+        st.dataframe(df.iloc[:,[0, 3, 2, 1]])
 
 
 if __name__ == '__main__':
