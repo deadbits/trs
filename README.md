@@ -83,7 +83,7 @@ RealName set to "Health Check Service". If any other values are received, the we
 “Health Check Service” admin user and creates an active session.
 ```
 
-#### Custom Prompts 📝
+### Custom Prompts 📝
 Custom prompt templates can be saved to the `prompts/` directory as text files with the `.txt` extension. The `!custom` command will look for prompts by file basename in that directory, add the URL's text content to the template, and send it to the LLM for processing.
 
 Custom prompts **must** include the format string `{document}` so the URL text content can be added.
