@@ -1,28 +1,22 @@
-# https://github.com/deadbits/trs
-import chromadb
+from typing import List, Tuple, Union, Dict
+from chromadb import PersistentClient, Settings
+from chromadb.utils import embedding_functions
+from loguru import logger
 
 from uuid import uuid4
 
-from loguru import logger
-
-from typing import List
-
-from chromadb.config import Settings
-from chromadb.utils import embedding_functions
-
 
 class VectorDB:
-    def __init__(self, collection_name: str, db_dir: str, n_results: int = 5, openai_key: str = None):
+    def __init__(self, collection_name: str, db_dir: str, n_results: int = 5, openai_key: str = None) -> None:
         self.embed_fn = embedding_functions.OpenAIEmbeddingFunction(
             api_key=openai_key,
             model_name='text-embedding-ada-002'
         )
-
         self.collection_name = collection_name
         self.db_dir = db_dir
-        self.n_results = int(n_results)
+        self.n_results = n_results
 
-        self.client = chromadb.PersistentClient(
+        self.client: PersistentClient = PersistentClient(
             path=self.db_dir,
             settings=Settings(
                 anonymized_telemetry=False,
@@ -32,7 +26,7 @@ class VectorDB:
         self.collection = self.get_or_create_collection(self.collection_name)
         logger.success('Loaded database')
 
-    def get_or_create_collection(self, name: str):
+    def get_or_create_collection(self, name: str) -> 'Collection':  # Assuming `Collection` is the return type
         logger.info(f'Using collection: {name}')
         self.collection = self.client.get_or_create_collection(
             name=name,
@@ -41,12 +35,18 @@ class VectorDB:
         )
         return self.collection
 
-    def add_texts(self, texts: List[str], metadatas: List[dict]):
-        success = False
+    def count(self) -> int:
+        return self.collection.count()
 
+    def get(self) -> Dict[str, List[Union[str, List[float], dict]]]:
+        logger.info('Getting all documents')
+        return self.collection.get()
+
+    def add_texts(self, texts: List[str], metadatas: List[dict]) -> Tuple[bool, List[str]]:
+        success = False
         logger.info(f'Adding {len(texts)} texts')
         ids = [str(uuid4()) for _ in range(len(texts))]
-
+        
         try:
             self.collection.add(
                 documents=texts,
@@ -59,11 +59,10 @@ class VectorDB:
 
         return (success, ids)
 
-    def add_embeddings(self, texts: List[str], embeddings: List[List], metadatas: List[dict]):
+    def add_embeddings(self, texts: List[str], embeddings: List[List[float]], metadatas: List[dict]) -> Tuple[bool, List[str]]:
         success = False
-
         logger.info(f'Adding {len(texts)} embeddings')
-        ids = [uuid4_str() for _ in range(len(texts))]
+        ids = [str(uuid4()) for _ in range(len(texts))]
 
         try:
             self.collection.add(
@@ -78,9 +77,8 @@ class VectorDB:
 
         return (success, ids)
 
-    def query(self, text: str):
+    def query(self, text: str) -> List[dict]:
         flattened = []
-
         logger.info(f'Querying database for: {text}')
         try:
             results = self.collection.query(
@@ -106,3 +104,4 @@ class VectorDB:
 
         except Exception as err:
             logger.error(f'Failed to query database: {err}')
+            return []
