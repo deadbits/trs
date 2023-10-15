@@ -19,6 +19,7 @@ The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts
 - **Detection Opportunities**: Identify potential threat detections 
 - **Custom Prompts**: Run custom prompts against reports
 - **Chat Mode**: Interactive Q&A with stored data via LLM
+- **Web Interface**: Streamlit web user interface
 
 ## Installation 🧰
 **Clone repository**
@@ -45,9 +46,14 @@ pip install -r requirements.txt
 export OPENAI_API_KEY="sk-..."
 ```
 
-**Run application**
+**Run command line application**
 ```bash
 python main.py --chat
+```
+
+**Run Streamlit web interface**
+```bash
+streamlit run trs-streamlit.py
 ```
 
 ![trs-cli](screenshots/cli.png)
