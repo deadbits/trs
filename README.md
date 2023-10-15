@@ -3,7 +3,7 @@
 ## Overview
 `trs` is a command line tool that leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. 
 
-Supply a threat report to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the report content.
+Supply a threat report URL to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the report content.
 
 Each URL's text content is stored in a Chroma vector database so you can have QnA / Retrieval-Augmented-Generation (RAG) chat sessions with the processed reports.
 
