@@ -35,7 +35,7 @@ source venv/bin/activate
 ```
 
 **Install Python requirements**
-```
+```bash
 pip install -r requirements.txt
 ```
 
