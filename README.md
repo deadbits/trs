@@ -59,7 +59,7 @@ python main.py --chat
 streamlit run trs-streamlit.py
 ```
 
-![trs-streamlit](screenshots/screenshots/IMG_3988.png)
+![trs-streamlit](screenshots/IMG_3988.png)
 
 ### Command List 🛠️ 
 
