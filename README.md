@@ -45,6 +45,7 @@ pip install -r requirements.txt
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
+You can interact with trs on the command line or via Streamlit.
 
 **Run command line application**
 ```bash
