@@ -77,6 +77,11 @@ if __name__ == '__main__':
                     else:
                         print('🤖 >>')
                         console.print(Markdown(result))
+                
+                else:
+                    result = trs.qna(prompt=prompt)
+                    print('🤖 >>')
+                    console.print(Markdown(result))
 
 
         except KeyboardInterrupt:
