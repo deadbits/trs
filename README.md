@@ -52,12 +52,14 @@ You can interact with trs on the command line or via Streamlit.
 python main.py --chat
 ```
 
+![trs-cli](screenshots/cli.png)
+
 **Run Streamlit web interface**
 ```bash
 streamlit run trs-streamlit.py
 ```
 
-![trs-cli](screenshots/cli.png)
+![trs-streamlit](screenshots/screenshots/IMG_3988.png)
 
 ### Command List 🛠️ 
 
