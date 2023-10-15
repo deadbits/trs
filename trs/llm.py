@@ -1,14 +1,9 @@
 import os
 import openai
 import tiktoken
-
 from loguru import logger
-
 from .schema import Document, Summary
-
-from datetime import datetime
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, List
+from typing import Optional
 
 
 PROMPT_DIR = os.path.abspath(os.path.join(os.path.abspath('.'), 'prompts'))
@@ -19,98 +14,79 @@ class LLM:
         openai.api_key = openai_api_key
         self.model = 'gpt-3.5-turbo-16k'
         self.encoding_name = 'cl100k_base'
-        self.token_limit = 16385 
+        self.token_limit = 16385
 
         try:
             openai.Model.list()
         except Exception as err:
-            logger.error(f'error connecting to openai: {err}')
-            raise err
+            logger.error(f'Error connecting to OpenAI: {err}')
+            raise
 
     def num_tokens(self, text: str) -> int:
         try:
             encoding = tiktoken.get_encoding(self.encoding_name)
             return len(encoding.encode(text))
         except Exception as err:
-            logger.error(f'error retrieving encoding: {err}')
+            logger.error(f'Error retrieving encoding: {err}')
             return 0
     
+    def _read_prompt(self, prompt_name: str) -> Optional[str]:
+        path = os.path.join(PROMPT_DIR, f'{prompt_name}.txt')
+        if os.path.exists(path):
+            with open(path, 'r') as f:
+                return f.read()
+        logger.error(f'Prompt not found: {path}')
+        return None
+
     def _call_openai(self, user_prompt: str, system_prompt: Optional[str] = None) -> Optional[str]:
-        logger.info('Calling OpenAI')
-
-        if system_prompt is None:
-            system_prompt = 'You are a helpful AI cybersecurity assistant.'
-
-        num_tokens = 0
-        up_tokens = self.num_tokens(user_prompt)
-        sp_tokens = self.num_tokens(system_prompt)
-
-        if up_tokens == 0 or sp_tokens == 0:
-            logger.warn(f'(error) failed to get token count for user prompt')
+        system_prompt = system_prompt or 'You are a helpful AI cybersecurity assistant.'
+        
+        token_counts = [self.num_tokens(p) for p in [user_prompt, system_prompt]]
+        if 0 in token_counts:
+            logger.warn('Failed to get token count for prompts')
             return None
 
-        num_tokens = up_tokens + sp_tokens
-        if num_tokens > self.token_limit:
-            logger.error(f'(error) token limit exceeded (limit: {self.token_limit}, tokens: {num_tokens})')
+        if sum(token_counts) > self.token_limit:
+            logger.error(f'Token limit exceeded: limit {self.token_limit}, used {sum(token_counts)}')
             return None
 
-        logger.info(f'token count: {num_tokens}')
         try:
             params = {
                 'model': self.model,
                 'messages': [
-                    {
-                        'role': 'system',
-                        'content': system_prompt
-                    },
-                    {
-                        'role': 'user',
-                        'content': user_prompt
-                    }
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': user_prompt}
                 ]
             }
-
             response = openai.ChatCompletion.create(**params)
             return response.choices[0].message['content']
         except Exception as err:
-            logger.error(f'error calling openai: {err}')
+            logger.error(f'Error calling OpenAI: {err}')
             return None
 
-    def mindmap(self, doc: Document) -> str:
-        logger.info('creating mindmap')
-        mindmap_prompt_template = open(PROMPT_DIR + '/mindmap.txt', 'r').read()
-        prompt = mindmap_prompt_template.format(document=doc.text)
-        return self._call_openai(user_prompt=prompt)
+    def _generic_prompt(self, prompt_name: str, doc: Document) -> Optional[str]:
+        template = self._read_prompt(prompt_name)
+        if template:
+            return self._call_openai(user_prompt=template.format(document=doc.text))
+        return None
 
-    def summarize(self, doc: Document) -> str:
-        logger.info('summarizing text')
-        intel_summary_prompt = open(PROMPT_DIR + '/summary.txt', 'r').read()
-        prompt = intel_summary_prompt.format(document=doc.text)
-        summary = self._call_openai(user_prompt=prompt)
-        return Summary(source=doc.source, summary=summary)
+    def mindmap(self, doc: Document) -> Optional[str]:
+        return self._generic_prompt('mindmap', doc)
+
+    def summarize(self, doc: Document) -> Optional[Summary]:
+        summary = self._generic_prompt('summary', doc)
+        if summary:
+            return Summary(source=doc.source, summary=summary)
+        return None
+
+    def detect(self, doc: Document) -> Optional[str]:
+        return self._generic_prompt('detect', doc)
     
-    def detect(self, doc: Document) -> str:
-        logger.info('identifying detections')
-        detection_prompt = open(PROMPT_DIR + '/detect.txt', 'r').read()
-        prompt = detection_prompt.format(document=doc.text)
-        return self._call_openai(user_prompt=prompt)
-    
-    def qna(self, question: str, docs: str) -> str:
-        logger.info('sending qna prompt')
-        qna_prompt_template = open(PROMPT_DIR + '/qna.txt', 'r').read()
-        prompt = qna_prompt_template.format(question=question, documents=docs)
-        return self._call_openai(user_prompt=prompt)
-    
-    def custom(self, prompt_name: str, doc: Document) -> str:
-        logger.info('building custom prompt template')
-        prompt_path = os.path.join(PROMPT_DIR, prompt_name + '.txt')
+    def qna(self, question: str, docs: str) -> Optional[str]:
+        template = self._read_prompt('qna')
+        if template:
+            return self._call_openai(user_prompt=template.format(question=question, documents=docs))
+        return None
 
-        if not os.path.exists(prompt_path):
-            logger.error(f'custom prompt template not found: {prompt_path}')
-            return None
-
-        custom_template = open(prompt_path).read()
-        prompt = custom_template.format(document=doc.text)
-        return self._call_openai(user_prompt=prompt)
-
-
+    def custom(self, prompt_name: str, doc: Document) -> Optional[str]:
+        return self._generic_prompt(prompt_name, doc)
