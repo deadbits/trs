@@ -146,6 +146,7 @@ def main():
 
         for item in sorted_history:
             st.write('Timestamp:', item['timestamp'])
+            st.write('URL:', item['url'])
             st.write('Prompt:', item['prompt'])
             st.write('Response:', item['response'])
             st.write('-' * 50)
