@@ -45,7 +45,6 @@ pip install -r requirements.txt
 ```bash
 export OPENAI_API_KEY="sk-..."
 ```
-You can interact with trs on the command line or via Streamlit.
 
 **Run command line application**
 ```bash
@@ -54,12 +53,18 @@ python main.py --chat
 
 ![trs-cli](screenshots/cli.png)
 
+***
+***Set your OpenAI API key:**
+* Modify *`.streamlit/secrets.toml`
+
 **Run Streamlit web interface**
 ```bash
 streamlit run trs-streamlit.py
 ```
 
 ![trs-streamlit](screenshots/streamlit-chat.png)
+
+More screenshots are [available here.](https://trs.deadbits.ai/overview/screenshots)
 
 ### Command List 🛠️ 
 
@@ -97,6 +102,15 @@ RealName set to "Health Check Service". If any other values are received, the we
 Custom prompt templates can be saved to the `prompts/` directory as text files with the `.txt` extension. The `!custom` command will look for prompts by file basename in that directory, add the URL's text content to the template, and send it to the LLM for processing.
 
 Custom prompts **must** include the format string `{document}` so the URL text content can be added.
+
+### Streamlit UI
+The Streamlit application offers some functionality that the CLI tool doesn't, including:
+
+**View prompt and response history**
+![streamlit-hist](screenshots/streamlit-hist.png)
+
+**View database records**
+![streamlit-db](screenshots/streamlit-db.png)
 
 ## Stack
 - **Python**
