@@ -50,7 +50,7 @@ class TRS:
 
     def process_document(self, source: str, load_func) -> Document:
         logger.info(f'processing: {source}')
-        doc = load_func(url=source)
+        doc = load_func(source=source)
         if doc is None:
             logger.error(f'Error retrieving Document: {source}')
             return None
@@ -106,7 +106,7 @@ class TRS:
                 texts=[summ.summary],
                 metadatas=[
                     {
-                        'source': url,
+                        'source': summ.source,
                         'type': 'summary'
                     }
                 ]
