@@ -8,6 +8,6 @@ iocextract==1.16.1
 tiktoken==0.5.1
 loguru==0.7.2
 streamlit==1.27.2
-streamlit_mermaid
-streamlit_extras
-PyPDF2
+streamlit-mermaid==0.2.0
+streamlit-extras==0.3.4
+PyPDF2==3.0.1
