@@ -50,7 +50,7 @@ class TRS:
 
     def process_document(self, source: str, load_func) -> Document:
         logger.info(f'processing: {source}')
-        doc = load_func(source=source)
+        doc = load_func(url=source)
         if doc is None:
             logger.error(f'Error retrieving Document: {source}')
             return None
