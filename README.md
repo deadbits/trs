@@ -62,6 +62,13 @@ python main.py --chat
 streamlit run trs-streamlit.py
 ```
 
+> [!IMPORTANT]
+> Per Streamlit's documentation, "Streamlit runs your script from top to bottom at every user interaction or code change. This execution model makes development super easy. But it comes with two major challenges:
+> Long-running functions run again and again, which slows down your app.
+> Objects get recreated again and again, which makes it hard to persist them across reruns or sessions."
+> This can lead to high memory usage when running the Streamlit app for longer periods of time. Right now, the CLI is the recommended mode of interaction. Streamlit will be ported to Flask and a more robust UI in the near future.
+
+
 ![trs-streamlit](screenshots/streamlit-chat.png)
 
 More screenshots are [available here.](https://trs.deadbits.ai/overview/screenshots)
