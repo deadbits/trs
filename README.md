@@ -54,7 +54,8 @@ python main.py --chat
 ![trs-cli](screenshots/cli.png)
 
 ***
-***Set your OpenAI API key:**
+
+**Set your OpenAI API key:**
 * Modify *`.streamlit/secrets.toml`
 
 **Run Streamlit web interface**
