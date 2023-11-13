@@ -3,9 +3,9 @@
 ## Overview 🏕️
 `trs` leverages an OpenAI and ChromaDB to analyze and chat with cyber threat intelligence reports and blogs. 
 
-Supply a threat report URL to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the URL's text.
+Supply a threat report URL to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the URLs text content.
 
-Each URL's text content is stored in a Chroma vector database so you can have QnA / Retrieval-Augmented-Generation (RAG) chat sessions with your stored data.
+Each URLs text is stored in a Chroma vector database so you can have QnA / Retrieval-Augmented-Generation (RAG) chat sessions with your stored data.
 
 The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts more easily, but feel free to swap this out for `gpt-4-32k`.
 
