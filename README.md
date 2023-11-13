@@ -41,6 +41,7 @@ pip install -r requirements.txt
 
 ## Usage 💬
 
+### Command line tool
 **Set your OpenAI API key:**
 ```bash
 export OPENAI_API_KEY="sk-..."
@@ -48,12 +49,14 @@ export OPENAI_API_KEY="sk-..."
 
 **Run command line application**
 ```bash
-python main.py --chat
+python trs-cli.py
 ```
 
 ![trs-cli](screenshots/cli.png)
 
 ***
+
+### Streamlit UI
 
 **Set your OpenAI API key:**
 * Modify `.streamlit/secrets.toml`
@@ -109,7 +112,7 @@ Custom prompt templates can be saved to the `prompts/` directory as text files w
 Custom prompts **must** include the format string `{document}` so the URL text content can be added.
 
 ### Streamlit UI
-The Streamlit application offers some functionality that the CLI tool doesn't, including:
+The Streamlit application offers some functionality that the CLI tool does not, including:
 
 **View prompt and response history**
 ![streamlit-hist](screenshots/streamlit-hist.png)
@@ -117,15 +120,6 @@ The Streamlit application offers some functionality that the CLI tool doesn't, i
 **View database records**
 ![streamlit-db](screenshots/streamlit-db.png)
 
-## Stack
-- **Python**
-- **OpenAI API**: LLM
-- **Loguru**: Logging
-- **Rich**: Better visuals
-- **Chroma:** Vector database
-- **Iocextract:** IOC extraction
-- **LlamaIndex:** Text chunking
-- **Unstructured:** URL retrieval and parsing
 
 ## License
 This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details.
