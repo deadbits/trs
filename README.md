@@ -1,4 +1,4 @@
-# trs
+# trs 🔭
 
 ## Overview 🏕️
 `trs` leverages an OpenAI and ChromaDB to analyze and chat with cyber threat intelligence reports and blogs. 
