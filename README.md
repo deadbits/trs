@@ -1,7 +1,7 @@
 # trs
 
 ## Overview 🏕️
-`trs` leverages an LLM (OpenAI) to chat with and analyze cyber threat intelligence reports and blogs. 
+`trs` leverages an OpenAI and ChromaDB to analyze and chat with cyber threat intelligence reports and blogs. 
 
 Supply a threat report URL to pre-built commands for summarization, MITRE TTP extraction, mindmap creation, and identification of detection opportunities, or run your own custom prompts against the URL's text.
 
@@ -18,7 +18,7 @@ The OpenAI model `gpt-3.5-turbo-16k` is used in order to support larger contexts
 - **Mindmap Creation**: Generate [Mermaid mindmap](https://mermaid.live/) representing report artifacts
 - **Detection Opportunities**: Identify potential threat detections 
 - **Custom Prompts**: Run custom prompts against reports
-- **Chat Mode**: Interactive Q&A with stored data via LLM
+- **Chat Mode**: Chat with stored data via LLM
 - **Web Interface**: Streamlit web user interface
 
 ## Installation 🧰
@@ -64,11 +64,8 @@ streamlit run trs-streamlit.py
 ```
 
 > [!IMPORTANT]
-> Per Streamlit's documentation, "Streamlit runs your script from top to bottom at every user interaction or code change. This execution model makes development super easy. But it comes with two major challenges:
-> Long-running functions run again and again, which slows down your app.
-> Objects get recreated again and again, which makes it hard to persist them across reruns or sessions."
-> This can lead to high memory usage when running the Streamlit app for longer periods of time. Right now, the CLI is the recommended mode of interaction. Streamlit will be ported to Flask and a more robust UI in the near future.
-
+> Per Streamlit's documentation, "Streamlit runs your script from top to bottom at every user interaction or code change."
+> This can lead to high memory usage due to ChromaDB being loaded into memory over and over. Right now, the CLI is the recommended mode of interaction. 
 
 ![trs-streamlit](screenshots/streamlit-chat.png)
 
@@ -78,9 +75,9 @@ More screenshots are [available here.](https://trs.deadbits.ai/overview/screensh
 
 | Command  | Description |
 |----------|-------------|
-| `!summ`  | Generate a summary of the URL's content including key takeaways, summary paragraph, [MITRE TTPs](https://www.google.com/search?q=MITRE+TTPs), and a [Mermaid mindmap](https://mermaid.live/) for a report overview.|
-| `!detect`| Identify any threat detection opportunities within the URL's content. |
-| `!custom`| Fetch the URL's content and process it with a custom prompt.|
+| `!summ`  | Generate a summary of the URL content including key takeaways, summary paragraph, [MITRE TTPs](https://attack.mitre.org), and [Mermaid mindmap](https://mermaid.live/) for a report overview.|
+| `!detect`| Identify any threat detection opportunities within the URL content. |
+| `!custom`| Fetch the URL content and process it with a custom prompt.|
 | all other input | Run RAG pipeline with input as query | 
 
 ### Retrieval-Augmented-Generation 🔍
@@ -88,7 +85,7 @@ More screenshots are [available here.](https://trs.deadbits.ai/overview/screensh
 
 Before you can use the chat functionality, you must first process a URL with one of the commands above so the vector database has some context to use.
 
-Any input that is **not** a `!command` will be processed for RAG over your previously processed reports.
+Any input that is **not** a `!command` will be sent to the RAG pipeline.
 
 If the answer is not available in the context, you won't get an answer.
 
