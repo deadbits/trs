@@ -49,7 +49,7 @@ export OPENAI_API_KEY="sk-..."
 
 **Run command line application**
 ```bash
-python trs-cli.py
+python trs-cli.py --chat
 ```
 
 ![trs-cli](screenshots/cli.png)
