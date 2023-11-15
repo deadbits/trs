@@ -1,9 +1,9 @@
 rich==13.6.0
 colored==2.2.3
 unstructured==0.10.19
-openai==0.28.1
-llama-index==0.8.41
-chromadb==0.4.14
+openai
+llama-index
+chromadb
 iocextract==1.16.1
 tiktoken==0.5.1
 loguru==0.7.2
