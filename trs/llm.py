@@ -12,9 +12,9 @@ PROMPT_DIR = os.path.abspath(os.path.join(os.path.abspath('.'), 'prompts'))
 class LLM:
     def __init__(self, openai_api_key: str) -> None:
         openai.api_key = openai_api_key
-        self.model = 'gpt-3.5-turbo-16k'
+        self.model = 'gpt-4-1106-preview'
         self.encoding_name = 'cl100k_base'
-        self.token_limit = 16385
+        self.token_limit = 128000
 
         try:
             openai.Model.list()
